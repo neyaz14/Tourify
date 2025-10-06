@@ -1,28 +1,33 @@
 import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
-interface EnvConfig {
+interface EnvVars {
     PORT: string,
-    DB_URL: string,
+    DBURL: string,
     NODE_ENV: "development" | "production"
 }
 
-const loadEnvVariables = (): EnvConfig => {
-    const requiredEnvVariables: string[] = ["PORT", "DB_URL", "NODE_ENV"];
-
-    requiredEnvVariables.forEach(key => {
-        if (!process.env[key]) {
-            throw new Error(`Missing require environment variabl ${key}`)
-        }
-    })
-
+const loadEnvVariables = (): EnvVars => {
+const requiredEnvVar: string[] = ["PORT", "DBURL", "NODE_ENV"];
+requiredEnvVar.forEach(key=>{
+    if(!process.env[key]){
+        throw new Error(`Missing requried env ${key}`)
+    }
+})
     return {
         PORT: process.env.PORT as string,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        DB_URL: process.env.DB_URL!,
+        DBURL: process.env.DBURL !,
         NODE_ENV: process.env.NODE_ENV as "development" | "production"
     }
+
+}
+loadEnvVariables()
+
+
+export const envVars: EnvVars = {
+    PORT: process.env.PORT,
+    DBURL: process.env.DBURL,
+    NODE_ENV: process.env.NODE_ENV
 }
 
-export const envVars = loadEnvVariables()
