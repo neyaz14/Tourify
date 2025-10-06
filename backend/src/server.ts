@@ -23,9 +23,41 @@ const startServer = async () => {
 }
 startServer()
 
+// server error handling
 
-process.on("unhandledRejection", () => {
-    console.log('unhandledRejection--server shutting down');
+// 1 unhandled rejection error
+// when any unhandle promise rejection will happen this code will shutdown the server
+process.on("unhandledRejection", (err) => {
+    console.log('unhandledRejection--server shutting down',"error -->>>>", err);
+
+    if (server) {
+        // server - express app server 
+        server.close(() => {
+            // process - nodejs server
+            process.exit(1);
+        });
+    }
+})
+
+
+// any local problem of server , if we dont handle them with try catch 
+// block then we will need to handle this 
+process.on("uncaughtException", (err) => {
+    console.log('uncaughtException--server shutting down',"error -->>>>", err);
+
+    if (server) {
+        // server - express app server 
+        server.close(() => {
+            // process - nodejs server
+            process.exit(1);
+        });
+    }
+})
+
+// 3 signal termination (sigterm)
+
+process.on("SIGTERM", () => {
+    console.log('SIGTERM signal recived--server shutting down');
 
     if (server) {
         // server - express app server 
@@ -39,8 +71,17 @@ process.on("unhandledRejection", () => {
 
 
 
+process.on("SIGINT", () => {
+    console.log('sigint signal recived--server shutting down');
 
-
+    if (server) {
+        // server - express app server 
+        server.close(() => {
+            // process - nodejs server
+            process.exit(1);
+        });
+    }
+})
 
 //---- Error Handling
 // 1 unhandled rejection error -
