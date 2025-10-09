@@ -1,6 +1,7 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { userRouter } from "./app/modules/user/user.route";
 import cors from "cors";
+import v1Router from "./app/routes";
 
 const app = express()
 app.use(express.json())
@@ -13,6 +14,15 @@ app.get("/", (req: Request, res: Response) => {
     })
 })
 
-app.use("/api/v1/user", userRouter)
+app.use("/api/v1", v1Router)
+
+// ? global error handler 
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    res.status(500).json({
+        success: false,
+        message: `Something went wrong ! ${err.message}`
+
+    })
+})
 
 export default app;
