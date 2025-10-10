@@ -22,13 +22,15 @@ export interface IUser {
 
     role: Role,
     auths: IAuthProviders[],
-    // TODO : fix this 
-    bookings?: string, // bookings collection er object id er array 
-    guides?: string,// guides collection er object id er array 
+   
 
     isActive?: IsActive,
     isVerified?: boolean,
     isDeleted?: boolean,
+
+     // TODO : fix this 
+    bookings?: string, // bookings collection er object id er array 
+    guides?: string,// guides collection er object id er array 
 }
 
 export enum Role {

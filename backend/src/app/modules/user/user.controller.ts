@@ -32,7 +32,6 @@ const getAllUsers = async (req: Request, res: Response) => {
             success: true,
             message: "all user data showed successfully",
             data: allUsers,
-
         })
     } catch (error) {
         console.log(error);
