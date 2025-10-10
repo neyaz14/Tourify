@@ -1,7 +1,9 @@
-import express, { NextFunction, Request, Response } from "express";
-import { userRouter } from "./app/modules/user/user.route";
+import express, { Request, Response } from "express";
+
 import cors from "cors";
 import v1Router from "./app/routes";
+
+import { globalErrorHandler } from "./app/middlewares/globalError";
 
 const app = express()
 app.use(express.json())
@@ -17,11 +19,12 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/v1", v1Router)
 
 // ? global error handler 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    res.status(500).json({
+app.use(globalErrorHandler)
+// todo: make it middleware 1
+app.use((req: Request, res: Response) => {
+    res.status(404).json({
         success: false,
-        message: `Something went wrong ! ${err.message}`
-
+        message: "Route Not found"
     })
 })
 
