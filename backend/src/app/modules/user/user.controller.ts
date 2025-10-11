@@ -2,41 +2,33 @@ import { NextFunction, Request, Response } from "express";
 
 import { userServices } from "./user.service";
 import { sendResponse } from "../../utilis/sendResponse";
+import { catchAsync } from "../../utilis/catchAsync";
+import httpStatus from "http-status-codes"
 
 
-const createUser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        // throw new AppError()
-        const newUser = await userServices.createUserService(req.body)
+const createUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const user = await userServices.createUserService(req.body);
 
-        res.status(201).json({
-            message: `User created successfuly !!`,
-            newUser
-        })
-    } catch (error) {
-        console.log(error);
-        next(error)
-    }
-}
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.CREATED,
+        message: "User Created Successfully",
+        data: user,
+    })
+})
 
-const getAllUsers = async (req: Request, res: Response) => {
-    try {
-        const allUsers = await userServices.getAllUsersService();
 
-        // res.status(201).json({
-        //     message: `all users`,
-        //     data: allUsers
-        // })
-        sendResponse(res, {
-            statusCode: 201,
-            success: true,
-            message: "all user data showed successfully",
-            data: allUsers,
-        })
-    } catch (error) {
-        console.log(error);
-    }
-}
+
+const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFunction)=>{
+    const allUsers = await userServices.getAllUsersService()
+
+    sendResponse(res, {
+         success: true,
+        statusCode: httpStatus.CREATED,
+        message: "User Created Successfully",
+        data: allUsers,
+    })
+})
 
 
 

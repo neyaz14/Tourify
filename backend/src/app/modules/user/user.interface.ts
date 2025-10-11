@@ -22,31 +22,30 @@ export interface IUser {
 
     role: Role,
     auths: IAuthProviders[],
-   
 
     isActive?: IsActive,
     isVerified?: boolean,
     isDeleted?: boolean,
 
-     // TODO : fix this 
+    // TODO : fix this 
     bookings?: string, // bookings collection er object id er array 
     guides?: string,// guides collection er object id er array 
-}
+};
 
 export enum Role {
     Super_Admin = "superAdmin",
     Admin = "admin",
     User = "user",
     Guide = "guide",
-}
+};
 
 export enum IsActive {
     Active = 'active',
     InActive = 'inactive',
     Block = 'block',
-}
+};
 
 export interface IAuthProviders {
-    providers: string,
+    providers: "google" | "credentials",
     providerId: string
-}
+};
