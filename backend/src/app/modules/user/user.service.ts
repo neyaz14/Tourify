@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { IAuthProviders, IUser } from "./user.interface";
 import { User } from "./user.model";
 
@@ -9,14 +10,22 @@ const createUserService = async (payload: Partial<IUser>) => {
     if (isUserExist) {
         throw new Error("User alredy exists")
     } else {
+
+        // * hashpassword
+        const hashedpassword = await bcrypt.hash(password as string, 10)
+    
+
         const authProvider: IAuthProviders = {
             providers: "credentials",
             providerId: email as string
         }
         const newUser = await User.create({
             name, email,
-            auths: [authProvider], password, ...rest
+            auths: [authProvider],
+            password: hashedpassword
+            , ...rest
         });
+
         console.log(newUser);
         return newUser;
     }

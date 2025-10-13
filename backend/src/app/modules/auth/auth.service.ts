@@ -1,0 +1,33 @@
+import { IUser } from "../user/user.interface"
+import { User } from "../user/user.model";
+import bcryptjs from "bcryptjs"
+
+const credentialsLoginService = async (payload: Partial<IUser>) => {
+
+    const { email, password } = payload;
+    // check if user exists
+    const isUserExists = await User.findOne({ email });
+    if (!isUserExists) {
+        throw new Error("email does not exist");
+    }
+
+    const isPassMatched = await bcryptjs.compare(password as string, isUserExists.password as string)
+
+    console.log(isPassMatched);
+    if (isPassMatched) {
+        const { password:_, ...rest } = isUserExists;
+
+        return {
+            ...rest
+        }
+    }else{
+        throw new Error("Password incorrect")
+    }
+
+
+
+}
+
+export const authService = {
+    credentialsLoginService
+}
