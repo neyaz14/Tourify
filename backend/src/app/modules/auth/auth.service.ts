@@ -1,6 +1,10 @@
+import { envVars } from "../../config/env";
+import { generateJwtToken } from "../../utilis/jwt";
 import { IUser } from "../user/user.interface"
 import { User } from "../user/user.model";
 import bcryptjs from "bcryptjs"
+
+
 
 const credentialsLoginService = async (payload: Partial<IUser>) => {
 
@@ -15,12 +19,17 @@ const credentialsLoginService = async (payload: Partial<IUser>) => {
 
     console.log(isPassMatched);
     if (isPassMatched) {
-        const { password:_, ...rest } = isUserExists;
+        const { name, email, id, isActive, isVerified, isDeleted, auths, role } = isUserExists;
+        const userInfo = { name, email, id, isActive, isVerified, isDeleted, auths, role }
+
+        const accessToken = generateJwtToken({ email, id, role }, envVars.JWT_Secrect, "1d");
+        console.log(accessToken);
 
         return {
-            ...rest
+            userInfo, accessToken
         }
-    }else{
+    } else {
+
         throw new Error("Password incorrect")
     }
 
