@@ -3,6 +3,7 @@ import { Server } from "http";
 import mongoose from "mongoose";
 import app from "./app";
 import { envVars } from "./app/config/env";
+import { seedSuperAdmin } from "./app/utilis/seedSuperAdmin";
 // import { envVars } from "./app/config/env";
 
 let server: Server;
@@ -21,7 +22,12 @@ const startServer = async () => {
         console.log('err ---------------->>>', error);
     }
 }
-startServer()
+
+// IFE function 
+(async () => {
+    await startServer();
+    await seedSuperAdmin();
+})();
 
 // server error handling
 

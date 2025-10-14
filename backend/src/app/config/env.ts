@@ -6,7 +6,9 @@ interface EnvVars {
     PORT: string,
     DBURL: string,
     NODE_ENV: "development" | "production",
-    JWT_Secrect: string
+    JWT_Secrect: string,
+    Super_Admin_email :string,
+    Super_Admin_password :string
 }
 
 const loadEnvVariables = (): EnvVars => {
@@ -18,9 +20,11 @@ requiredEnvVar.forEach(key=>{
 })
     return {
         PORT: process.env.PORT as string,
-        DBURL: process.env.DBURL !,
+        DBURL: process.env.DBURL ,
         NODE_ENV: process.env.NODE_ENV as "development" | "production",
-        JWT_Secrect: process.env.JWT_Secrect as string
+        JWT_Secrect: process.env.JWT_Secrect as string,
+        Super_Admin_email : process.env.Super_Admin_email as string,
+        Super_Admin_password: process.env.Super_Admin_password as string
     }
 
 }
@@ -31,6 +35,8 @@ export const envVars: EnvVars = {
     PORT: process.env.PORT,
     DBURL: process.env.DBURL,
     NODE_ENV: process.env.NODE_ENV,
-    JWT_Secrect: process.env.JWT_Secrect
+    JWT_Secrect: process.env.JWT_Secrect,
+    Super_Admin_email : process.env.Super_Admin_email,
+    Super_Admin_password: process.env.Super_Admin_password
 }
 
