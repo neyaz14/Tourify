@@ -17,13 +17,13 @@ const credentialsLoginService = async (payload: Partial<IUser>) => {
 
     const isPassMatched = await bcryptjs.compare(password as string, isUserExists.password as string)
 
-    console.log(isPassMatched);
+    // console.log(isPassMatched);
     if (isPassMatched) {
         const { name, email, id, isActive, isVerified, isDeleted, auths, role } = isUserExists;
         const userInfo = { name, email, id, isActive, isVerified, isDeleted, auths, role }
 
         const accessToken = generateJwtToken({ email, id, role }, envVars.JWT_Secrect, "1d");
-        console.log(accessToken);
+        // console.log(accessToken);
 
         return {
             userInfo, accessToken

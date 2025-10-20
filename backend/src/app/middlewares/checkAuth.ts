@@ -13,8 +13,8 @@ export const checkAuth = (...authRoles: string[]) => async (req: Request, res: R
 
         const verifiedToken = verifyToken(accessToken, envVars.JWT_Secrect) as JwtPayload;
         // console.log(verifiedToken);
-
         if (authRoles.includes(verifiedToken.role)) {
+            req.user = verifiedToken;
             next();
         } else {
             throw new AppError(401, "User not allowed to see the data ")
@@ -22,5 +22,4 @@ export const checkAuth = (...authRoles: string[]) => async (req: Request, res: R
     } catch (error) {
         next(error)
     }
-
 }

@@ -19,3 +19,4 @@ userRouter.post("/register", validateRequest(createUserZodSchema), userControlle
 
 userRouter.get("/allUsers", checkAuth(Role.Admin, Role.Super_Admin), userControllers.getAllUsers)
 
+userRouter.patch("/:id",checkAuth(...Object.values(Role)) ,userControllers.updateUser)

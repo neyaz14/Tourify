@@ -9,7 +9,7 @@ export const seedSuperAdmin = async () => {
         const isSeedSuperAdminExists = await User.findOne({ email: envVars.Super_Admin_email })
 
         if (isSuperAdminExists.length !==0 || isSeedSuperAdminExists) {
-            console.log(isSeedSuperAdminExists, isSuperAdminExists);
+           
             console.log("there is a supper admin ");
             return ; 
         } else {
