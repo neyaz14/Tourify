@@ -2,12 +2,13 @@ import express, { Request, Response } from "express";
 
 import cors from "cors";
 import v1Router from "./app/routes";
-
+import cookieParser from "cookie-parser";
 import { globalErrorHandler } from "./app/middlewares/globalError";
 
 const app = express()
 app.use(express.json())
 app.use(cors())
+app.use(cookieParser())
 // let hwllo;
 app.get("/", (req: Request, res: Response) => {
     // console.log("lets see what happen");

@@ -8,4 +8,3 @@ export const catchAsync = (func: AsyncHandler)=> (req: Request, res: Response, n
         next(err);
     })
 }
- 

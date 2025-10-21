@@ -9,11 +9,13 @@ interface EnvVars {
     JWT_Secrect: string,
     Super_Admin_email: string,
     Super_Admin_password: string,
-    Bycrypt_Salt: number
+    Bycrypt_Salt: number,
+    JWT_REFRESH_SECRECT:string,
+    JWT_REFRESH_TIME: string
 }
 
 const loadEnvVariables = (): EnvVars => {
-    const requiredEnvVar: string[] = ["PORT", "DBURL", "NODE_ENV"];
+    const requiredEnvVar: string[] = ["PORT", "DBURL", "NODE_ENV","JWT_Secrect","Super_Admin_email", "Super_Admin_password", "Bycrypt_Salt", "JWT_REFRESH_TIME", "JWT_REFRESH_SECRECT"];
     requiredEnvVar.forEach(key => {
         if (!process.env[key]) {
             throw new Error(`Missing requried env ${key}`)
@@ -26,7 +28,9 @@ const loadEnvVariables = (): EnvVars => {
         JWT_Secrect: process.env.JWT_Secrect as string,
         Super_Admin_email: process.env.Super_Admin_email as string,
         Super_Admin_password: process.env.Super_Admin_password as string,
-        Bycrypt_Salt: Number(process.env.Bycrypt_Salt)
+        Bycrypt_Salt: Number(process.env.Bycrypt_Salt),
+        JWT_REFRESH_TIME:process.env.JWT_REFRESH_TIME as string,
+        JWT_REFRESH_SECRECT: process.env.JWT_REFRESH_SECRECT as string
     }
 
 }
@@ -40,6 +44,8 @@ export const envVars: EnvVars = {
     JWT_Secrect: process.env.JWT_Secrect,
     Super_Admin_email: process.env.Super_Admin_email,
     Super_Admin_password: process.env.Super_Admin_password,
-    Bycrypt_Salt : process.env.Bycrypt_Salt
+    Bycrypt_Salt : process.env.Bycrypt_Salt,
+    JWT_REFRESH_SECRECT:process.env.JWT_REFRESH_SECRECT ,
+    JWT_REFRESH_TIME: process.env.JWT_REFRESH_TIME
 }
 
