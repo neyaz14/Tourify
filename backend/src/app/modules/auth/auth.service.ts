@@ -1,13 +1,8 @@
-
-import { ClientSession } from "mongodb";
 import { createNewAccessTokenWithRefreshToken, createUserTokens } from "../../utilis/userTokens";
 import { IUser } from "../user/user.interface";
 
 import { User } from "../user/user.model";
 import bcryptjs from "bcryptjs"
-
-
-
 
 const credentialsLoginService = async (payload: Partial<IUser>) => {
 

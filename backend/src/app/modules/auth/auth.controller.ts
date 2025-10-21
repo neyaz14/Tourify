@@ -4,15 +4,16 @@ import { sendResponse } from "../../utilis/sendResponse";
 import httpStatus from "http-status-codes"
 import { authService } from "./auth.service";
 import AppError from "../../errorhelpers/AppError";
+import { setAuthCookie } from "../../utilis/setCookies";
 
 
 const credentialsLoginController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const userInfo = await authService.credentialsLoginService(req.body);
+    console.log(userInfo);
 
-    res.cookie("refreshToken", userInfo.refreshToken, {
-        httpOnly: true,
-        secure: false
-    })
+    // setting auth cookies in the browser
+    setAuthCookie(res, userInfo)
+
 
     sendResponse(res, {
         success: true,
@@ -31,14 +32,16 @@ const getNewAccessTokenController = catchAsync(async (req: Request, res: Respons
         throw new AppError(httpStatus.UNAUTHORIZED, "Refresh token not found");
     }
 
-    const userInfo = await authService.getNewAccessTokenService(refreshToken);
+    const tokenInfo = await authService.getNewAccessTokenService(refreshToken);
+
+    setAuthCookie(res, tokenInfo)
 
     // console.log(userInfo);
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
         message: "user login  Successfully",
-        data: userInfo,
+        data: tokenInfo,
     })
 })
 export const authControllers = {

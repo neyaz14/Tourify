@@ -15,7 +15,7 @@ export const createUserTokens = (user: Partial<IUser>) => {
         role: user.role
     }
 
-    const accessToken = generateJwtToken(jwtPayload, envVars.JWT_Secrect, "1d");
+    const accessToken = generateJwtToken(jwtPayload, envVars.JWT_Secrect, "30s");
     // console.log(accessToken);
     // * Refresh token 
     const refreshToken = generateJwtToken(jwtPayload, envVars.JWT_REFRESH_SECRECT, envVars.JWT_REFRESH_TIME);
@@ -24,8 +24,8 @@ export const createUserTokens = (user: Partial<IUser>) => {
 }
 
 // ! using refresh token create a new access token 
-export const createNewAccessTokenWithRefreshToken = async(refreshToken: string) => {
-    
+export const createNewAccessTokenWithRefreshToken = async (refreshToken: string) => {
+
     const verifiedRefreshToken = verifyToken(refreshToken, envVars.JWT_REFRESH_SECRECT) as JwtPayload;
     console.log('verifiedRefreshToken', verifiedRefreshToken);
 
@@ -46,7 +46,7 @@ export const createNewAccessTokenWithRefreshToken = async(refreshToken: string) 
         email: isUserExists.email,
         role: isUserExists.role
     }
-    const accessToken = generateJwtToken(jwtAccessTokenPayload, envVars.JWT_Secrect, "1d")
+    const accessToken = generateJwtToken(jwtAccessTokenPayload, envVars.JWT_Secrect, "30s")
 
     return { accessToken }
 }
