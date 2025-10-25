@@ -12,7 +12,10 @@ isVerified: Boolean
 auths: Array of auth providers (e.g., Google, Facebook)
 */
 
+import { Types } from "mongoose"
+
 export interface IUser {
+    _id?: Types.ObjectId,
     name: string,
     email: string,
     password?: string,

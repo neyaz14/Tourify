@@ -2,12 +2,23 @@ import express, { Request, Response } from "express";
 
 import cors from "cors";
 import v1Router from "./app/routes";
-
+import cookieParser from "cookie-parser";
 import { globalErrorHandler } from "./app/middlewares/globalError";
+import passport from "passport";
+import experssSession from "express-session"
 
 const app = express()
+
+app.use(experssSession({
+    secret:"secrect",
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(express.json())
 app.use(cors())
+app.use(cookieParser())
 // let hwllo;
 app.get("/", (req: Request, res: Response) => {
     // console.log("lets see what happen");
