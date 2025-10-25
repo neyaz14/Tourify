@@ -43,6 +43,11 @@ const getNewAccessTokenService = async (refreshToken: string) => {
 
 }
 
+const logOutService = async () => {
+    return undefined
+}
+
+
 export const authService = {
-    credentialsLoginService, getNewAccessTokenService
+    credentialsLoginService, getNewAccessTokenService, logOutService
 }

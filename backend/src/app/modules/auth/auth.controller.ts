@@ -23,8 +23,6 @@ const credentialsLoginController = catchAsync(async (req: Request, res: Response
     })
 })
 
-
-
 const getNewAccessTokenController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const refreshToken = req.cookies.refreshToken;
     // console.log("refreshToken", refreshToken);
@@ -44,6 +42,32 @@ const getNewAccessTokenController = catchAsync(async (req: Request, res: Respons
         data: tokenInfo,
     })
 })
+
+
+const logOutController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    
+
+    res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "user Logged out  Successfully",
+        data: null,
+    })
+})
+
 export const authControllers = {
-    credentialsLoginController, getNewAccessTokenController
+    credentialsLoginController, getNewAccessTokenController, logOutController
 }
