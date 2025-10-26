@@ -49,7 +49,7 @@ const getNewAccessTokenController = catchAsync(async (req: Request, res: Respons
 
 const logOutController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    
+
 
     res.clearCookie("accessToken", {
         httpOnly: true,
@@ -73,12 +73,18 @@ const logOutController = catchAsync(async (req: Request, res: Response, next: Ne
 
 const googleCallback = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
+    let redirectTo = req.query.state ? req.query.state as string : "";
+   
+    if (redirectTo.startsWith('/')) {
+        redirectTo = redirectTo.slice(1)
+    }
+    console.log("from the controller -- ");
     const user = req.user;
     console.log('user from req ', user);
-    if(!user){
+    if (!user) {
         throw new AppError(httpStatus.NOT_FOUND, "User not found")
     }
-    const tokenInfo =  createUserTokens(user);
+    const tokenInfo = createUserTokens(user);
 
     setAuthCookie(res, tokenInfo)
 
@@ -93,7 +99,8 @@ const googleCallback = catchAsync(async (req: Request, res: Response, next: Next
     //     sameSite: "lax"
     // })
 
-    res.redirect(envVars.FRONTEND_URL)
+    // res.redirect(`${envVars.FRONTEND_URL}`)
+    res.redirect(`${envVars.FRONTEND_URL}/${redirectTo}`)
 
 
     sendResponse(res, {
@@ -105,5 +112,5 @@ const googleCallback = catchAsync(async (req: Request, res: Response, next: Next
 })
 
 export const authControllers = {
-    credentialsLoginController, getNewAccessTokenController, logOutController,googleCallback
+    credentialsLoginController, getNewAccessTokenController, logOutController, googleCallback
 }
