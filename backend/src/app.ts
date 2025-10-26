@@ -1,16 +1,16 @@
 import express, { Request, Response } from "express";
-
 import cors from "cors";
 import v1Router from "./app/routes";
 import cookieParser from "cookie-parser";
 import { globalErrorHandler } from "./app/middlewares/globalError";
 import passport from "passport";
 import experssSession from "express-session"
+import "./app/config/passport"
 
 const app = express()
 
 app.use(experssSession({
-    secret:"secrect",
+    secret: "secrect",
     resave: false,
     saveUninitialized: false
 }))

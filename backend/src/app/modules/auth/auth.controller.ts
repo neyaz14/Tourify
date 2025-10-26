@@ -5,6 +5,9 @@ import httpStatus from "http-status-codes"
 import { authService } from "./auth.service";
 import AppError from "../../errorhelpers/AppError";
 import { setAuthCookie } from "../../utilis/setCookies";
+import { createUserTokens } from "../../utilis/userTokens";
+import { envVars } from "../../config/env";
+
 
 
 const credentialsLoginController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -68,6 +71,39 @@ const logOutController = catchAsync(async (req: Request, res: Response, next: Ne
     })
 })
 
+const googleCallback = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    const user = req.user;
+    console.log('user from req ', user);
+    if(!user){
+        throw new AppError(httpStatus.NOT_FOUND, "User not found")
+    }
+    const tokenInfo =  createUserTokens(user);
+
+    setAuthCookie(res, tokenInfo)
+
+    // res.clearCookie("accessToken", {
+    //     httpOnly: true,
+    //     secure: false,
+    //     sameSite: "lax"
+    // })
+    // res.clearCookie("refreshToken", {
+    //     httpOnly: true,
+    //     secure: false,
+    //     sameSite: "lax"
+    // })
+
+    res.redirect(envVars.FRONTEND_URL)
+
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "user Logged out  Successfully",
+        data: null,
+    })
+})
+
 export const authControllers = {
-    credentialsLoginController, getNewAccessTokenController, logOutController
+    credentialsLoginController, getNewAccessTokenController, logOutController,googleCallback
 }
