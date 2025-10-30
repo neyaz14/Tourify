@@ -1,9 +1,12 @@
 import { Types } from "mongoose";
 
-export interface ITour{
+export interface ITourType {
+    name: string
+}
+export interface ITour {
     title: string,
     slug: string,
-    description ?: string,
+    description?: string,
     thumbnail?: string,
     images?: string[],
     location?: string,
@@ -13,7 +16,7 @@ export interface ITour{
     include?: string[],
     exclude?: string[],
     amenities?: string[],
-    tourPlan? : string[],
+    tourPlan?: string[],
 
     maxGuest?: number,
     minAge?: number,
