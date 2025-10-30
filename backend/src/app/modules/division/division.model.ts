@@ -11,7 +11,6 @@ const divisionSchema = new Schema<IDivision>(
     },
     slug: {
       type: String,
-      required: [true, "Slug is required"],
       unique: true,
       lowercase: true,
       trim: true,
