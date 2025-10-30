@@ -58,7 +58,6 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
     else if (err instanceof AppError) {
         statusCode = err.statusCode;
         message = err.message;
-
         console.log(err);
     }
     else if (err instanceof Error) {
