@@ -11,8 +11,9 @@ export const checkAuth = (...authRoles: string[]) => async (req: Request, res: R
 
         if (!accessToken) throw new AppError(403, "No token recived");
 
-        const verifiedToken = verifyToken(accessToken, envVars.JWT_Secrect) as JwtPayload;
-        // console.log(verifiedToken);
+        const verifiedToken = verifyToken(accessToken, envVars.JWT_Secrect) as JwtPayload;  
+        console.log(accessToken);
+
         if (authRoles.includes(verifiedToken.role)) {
             req.user = verifiedToken;
             next();

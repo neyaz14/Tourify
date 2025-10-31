@@ -26,7 +26,7 @@ const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFun
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
-        message: "User Created Successfully",
+        message: "All user supplied",
         data: allUsers,
     })
 })
@@ -47,7 +47,7 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
-        message: "User Created Successfully",
+        message: "User updated Successfully",
         data: updatedInfo,
     })
 })

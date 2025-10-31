@@ -8,7 +8,6 @@ import { seedSuperAdmin } from "./app/utilis/seedSuperAdmin";
 
 let server: Server;
 
-
 const startServer = async () => {
     try {
         await mongoose.connect(envVars.DBURL)
@@ -19,7 +18,7 @@ const startServer = async () => {
             console.log(`Server is listening to port ${envVars.PORT}`);
         });
     } catch (error) {
-        console.log('err ---------------->>>', error);
+        console.log('err from starting a server ---------->>>', error);
     }
 }
 

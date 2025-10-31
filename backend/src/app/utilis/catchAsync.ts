@@ -19,7 +19,7 @@ export const catchAsync = (fn: AsyncHandler) => (req: Request, res: Response, ne
     Promise.resolve(fn(req, res, next)).catch((err: any) => {
         // console.log(err);
         if(envVars.NODE_ENV ==="development"){
-            console.log(err);
+            console.log("Error from catchAsync ===>",err);
         }
         next(err)
     })

@@ -58,13 +58,13 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
     else if (err instanceof AppError) {
         statusCode = err.statusCode;
         message = err.message;
-        console.log(err);
+        console.log("Error form globalError, instance of AppError",err);
     }
     else if (err instanceof Error) {
         statusCode = 500;
         message = err.message
     }
-
+    
 
 
 

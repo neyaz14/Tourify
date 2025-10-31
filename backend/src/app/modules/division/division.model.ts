@@ -12,19 +12,19 @@ const divisionSchema = new Schema<IDivision>(
     slug: {
       type: String,
       unique: true,
-      lowercase: true,
-      trim: true,
     },
     thumbnail: {
       type: String,
-      default: null,
+
     },
     description: {
       type: String,
+
     },
   },
   {
     timestamps: true,
+    versionKey: false
   }
 );
 

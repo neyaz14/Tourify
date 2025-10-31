@@ -11,14 +11,12 @@ const createUserService = async (payload: Partial<IUser>) => {
     const { name, email, password, ...rest } = payload;
 
     const isUserExist = await User.findOne({ email })
-    // if (isUserExist) {
-    //     throw new AppError(httpsCode.BAD_REQUEST, "Email alredy exists")
-    // }
-
+    if (isUserExist) {
+        throw new AppError(httpsCode.BAD_REQUEST, "Email alredy exists")
+    }
 
     // * hashpassword
     const hashedpassword = await bcrypt.hash(password as string, 10)
-
 
     const authProvider: IAuthProviders = {
         providers: "credentials",
@@ -33,10 +31,7 @@ const createUserService = async (payload: Partial<IUser>) => {
 
     // console.log(newUser);
     return newUser;
-
-
 }
-
 
 
 const getAllUsersService = async () => {
