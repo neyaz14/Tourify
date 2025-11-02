@@ -2,6 +2,7 @@ import { Router } from "express"
 import { userRouter } from "../modules/user/user.route"
 import { authRouter } from "../modules/auth/auth.routes"
 import { divisionRouter } from "../modules/division/division.route"
+import { tourRouter } from "../modules/tour/tour.routes"
 
 const v1Router: Router = Router()
 
@@ -23,10 +24,10 @@ const moduleRoutes: IModuleRoute[] = [
         path: '/division',
         route: divisionRouter
     },
-    // {
-    //     path: '/division',
-    //     route: authRouter
-    // },
+    {
+        path: '/tour',
+        route: tourRouter
+    },
 ]
 
 moduleRoutes.forEach(route=>{
