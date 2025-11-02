@@ -11,17 +11,18 @@ tourRouter.get("/tour-types", TourController.getAllTourTypes);
 
 tourRouter.post(
     "/create-tour-type",
-    checkAuth(Role.Admin, Role.Super_Admin),
+    // checkAuth(Role.Admin, Role.Super_Admin),
     // validateRequest(createTourTypeZodSchema),
     TourController.createTourType
 );
 
 tourRouter.patch(
     "/tour-types/:id",
-    checkAuth(Role.Admin, Role.Super_Admin),
+    // checkAuth(Role.Admin, Role.Super_Admin),
     // validateRequest(createTourTypeZodSchema),
     TourController.updateTourType
 );
 
 tourRouter.delete("/tour-types/:id",
-    checkAuth(Role.Admin, Role.Super_Admin), TourController.deleteTourType);
+    // checkAuth(Role.Admin, Role.Super_Admin),
+    TourController.deleteTourType);
