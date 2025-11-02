@@ -26,3 +26,25 @@ tourRouter.patch(
 tourRouter.delete("/tour-types/:id",
     // checkAuth(Role.Admin, Role.Super_Admin),
     TourController.deleteTourType);
+
+
+    /* --------------------- TOUR ROUTES ---------------------- */
+tourRouter.get("/", TourController.getAllTours);
+
+tourRouter.post(
+    "/create",
+    // checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+    // validateRequest(createTourZodSchema),
+    TourController.createTour
+);
+
+tourRouter.patch(
+    "/:id",
+    // checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+    // validateRequest(updateTourZodSchema),
+    TourController.updateTour
+);
+
+tourRouter.delete("/:id", 
+    // checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+    TourController.deleteTour);

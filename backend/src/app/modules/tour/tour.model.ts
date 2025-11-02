@@ -4,7 +4,7 @@ import { ITour, ITourType } from "./tour.interface";
 
 const tourTypeSchema = new Schema<ITourType>({
   name: { type: String, required: true, unique: true }
-},{
+}, {
   timestamps: true
 })
 
@@ -12,51 +12,32 @@ export const TourType = model<ITourType>("TourType", tourTypeSchema)
 
 const tourSchema = new Schema<ITour>(
   {
-    title: {
-      type: String,
-      required: [true, "Title is required"],
-      unique: true,
-      trim: true,
-    },
-    slug: {
-      type: String,
-      required: [true, "Slug is required"],
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
-    description: String,
-    thumbnail: String,
-    images: [String],
-    location: String,
-    costFrom: {
-      type: Number,
-      min: [0, "Cost cannot be negative"],
-    },
-    startDate: Date,
-    endDate: Date,
-    include: [String],
-    exclude: [String],
-    amenities: [String],
-    tourPlan: [String],
-    maxGuest: {
-      type: Number,
-      min: [1, "Guest count must be at least 1"],
-    },
-    minAge: {
-      type: Number,
-      min: [0, "Age cannot be negative"],
-    },
+    title: { type: String, required: true },
+    slug: { type: String, unique: true },
+    description: { type: String },
+    images: { type: [String], default: [] },
+    location: { type: String },
+    costFrom: { type: Number },
+    startDate: { type: Date },
+    endDate: { type: Date },
+    departureLocation: { type: String },
+    arrivalLocation: { type: String },
+    included: { type: [String], default: [] },
+    excluded: { type: [String], default: [] },
+    amenities: { type: [String], default: [] },
+    tourPlan: { type: [String], default: [] },
+    maxGuest: { type: Number },
+    minAge: { type: Number },
     division: {
       type: Schema.Types.ObjectId,
       ref: "Division",
-      required: [true, "Division is required"],
+      required: true
     },
     tourType: {
       type: Schema.Types.ObjectId,
       ref: "TourType",
-      required: [true, "Tour Type is required"],
-    },
+      required: true
+    }
   },
   {
     timestamps: true,
