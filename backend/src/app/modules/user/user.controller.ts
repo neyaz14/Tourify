@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-
 import { userServices } from "./user.service";
 import { sendResponse } from "../../utilis/sendResponse";
 import { catchAsync } from "../../utilis/catchAsync";
@@ -19,7 +18,6 @@ const createUser = catchAsync(async (req: Request, res: Response, next: NextFunc
 })
 
 
-
 const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const allUsers = await userServices.getAllUsersService()
 
@@ -30,8 +28,6 @@ const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFun
         data: allUsers,
     })
 })
-
-
 
 
 const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -51,7 +47,6 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
         data: updatedInfo,
     })
 })
-
 
 
 export const userControllers = { createUser, getAllUsers, updateUser }

@@ -11,14 +11,14 @@ export const checkAuth = (...authRoles: string[]) => async (req: Request, res: R
 
         if (!accessToken) throw new AppError(403, "No token recived");
 
-        const verifiedToken = verifyToken(accessToken, envVars.JWT_Secrect) as JwtPayload;  
+        const verifiedToken = verifyToken(accessToken, envVars.JWT_Secrect) as JwtPayload;
         console.log(accessToken);
 
         if (authRoles.includes(verifiedToken.role)) {
             req.user = verifiedToken;
             next();
         } else {
-            throw new AppError(401, "User not allowed to see the data ")
+            throw new AppError(401, "User not allowed ")
         }
     } catch (error) {
         next(error)
