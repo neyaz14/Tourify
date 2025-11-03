@@ -11,15 +11,15 @@ const createDivisioin = async (payload: Partial<IDivision>) => {
     if (existngDivision) {
         throw new AppError(httpsCdoe.BAD_REQUEST, "A division with this name already exists");
     }
-    const baseSlug = payload.name?.toLocaleLowerCase().split(" ").join("-");
-    let slug = `${baseSlug}-division`;
+    // const baseSlug = payload.name?.toLocaleLowerCase().split(" ").join("-");
+    // let slug = `${baseSlug}-division`;
 
-    let counter = 0;
-    while (await Division.exists({ slug })) {
-        slug = `${slug}-${counter++}`;
-    }
+    // let counter = 0;
+    // while (await Division.exists({ slug })) {
+    //     slug = `${slug}-${counter++}`;
+    // }
 
-    payload.slug = slug;
+    // payload.slug = slug;
     console.log('before creating a division , checking the payload ==>', payload);
     const newDivision = await Division.create(payload);
     console.log("after saving, new division ==>", newDivision);
@@ -42,8 +42,18 @@ const deleteDivision = async (payload) => {
 const updateDivision = async (divisionId: string, payload: Partial<IDivision>, verifiedToken: JwtPayload) => {
     //first check the name 
     const existngDivision = await Division.findOne({ name: payload.name });
-    if (existngDivision) {
+    if (!existngDivision) {
         throw new AppError(httpsCdoe.BAD_REQUEST, "A division with this name already exists");
+    }
+
+    // check if division Name if exists in another doc
+    // prevent duplicate division 
+    const duplicateDivision = await Division.findOne({
+        name: payload.name,
+        _id: {$ne: divisionId} 
+    })
+    if(duplicateDivision){
+        throw new AppError(httpsCdoe.BAD_REQUEST, 'Has a same division name with this Name')
     }
 
     // creating the slug

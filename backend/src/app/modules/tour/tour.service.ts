@@ -6,6 +6,7 @@ import httpsStatusCode from "http-status-codes"
 
 // *---------------- TourType
 const createTourType = async (payload: ITourType) => {
+    console.log('from inside the service ===>', payload);
     const existingTourType = await TourType.findOne({ name: payload.name });
     if (existingTourType) {
         throw new Error("Tour type already exists.");
@@ -41,20 +42,21 @@ const deleteTourType = async (id: string) => {
 // *---------------- Tour
 
 const createTour = async (payload: ITour) => {
+    console.log("inside the createTour service ==>", payload);
     const existingTour = await Tour.findOne({ title: payload.title });
     if (existingTour) {
         throw new Error("A tour with this title already exists.");
     }
-    // ?---- working on the slug
-    const baseSlug = payload.title.toLowerCase().split(" ").join("-")
-    let slug = `${baseSlug}`
+    // // ?---- working on the slug
+    // const baseSlug = payload.title.toLowerCase().split(" ").join("-")
+    // let slug = `${baseSlug}`
 
-    let counter = 0;
-    while (await Tour.exists({ slug })) {
-        slug = `${slug}-${counter++}` // dhaka-division-2
-    }
+    // let counter = 0;
+    // while (await Tour.exists({ slug })) {
+    //     slug = `${slug}-${counter++}` // dhaka-division-2
+    // }
 
-    payload.slug = slug;
+    // payload.slug = slug;
 
     const tour = await Tour.create(payload)
 
@@ -70,20 +72,20 @@ const updateTour = async (id: string, payload: Partial<ITour>) => {
         throw new Error("Tour not found.");
     }
 
-    if (payload.title) {
-        const baseSlug = payload.title.toLowerCase().split(" ").join("-")
-        let slug = `${baseSlug}`
+    // if (payload.title) {
+    //     const baseSlug = payload.title.toLowerCase().split(" ").join("-")
+    //     let slug = `${baseSlug}`
 
-        let counter = 0;
-        while (await Tour.exists({ slug })) {
-            slug = `${slug}-${counter++}`
+    //     let counter = 0;
+    //     while (await Tour.exists({ slug })) {
+    //         slug = `${slug}-${counter++}`
 
-        }
+    //     }
 
-        payload.slug = slug
-    }
+    //     payload.slug = slug
+    // }
 
-    const updatedTour = await Tour.findByIdAndUpdate(id, payload, { new: true });
+    const updatedTour = await Tour.findByIdAndUpdate(id, payload, { new: true});
 
     return updatedTour;
 };

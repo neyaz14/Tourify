@@ -5,8 +5,9 @@ import { TourService } from "./tour.service";
 
 
 const createTourType = catchAsync(async (req: Request, res: Response) => {
-    const { name } = req.body;
-    const result = await TourService.createTourType(name);
+    const payload  = req.body;
+    console.log('from inside the controller===>', payload);
+    const result = await TourService.createTourType(payload);
     sendResponse(res, {
         statusCode: 201,
         success: true,

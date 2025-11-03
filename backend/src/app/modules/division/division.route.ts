@@ -10,10 +10,10 @@ export const divisionRouter = Router();
 
 // ! use checkAuth 
 
-divisionRouter.post("/create",validateRequest(createDivisionZodSchema), divisionController.createDivisioin);  
+divisionRouter.post("/create", checkAuth(Role.Admin, Role.Super_Admin), validateRequest(createDivisionZodSchema), divisionController.createDivisioin);
 
 divisionRouter.get("/allDivision", divisionController.getAllDivision)
 
-divisionRouter.patch("/:id",validateRequest(updateDivisionZodSchema) ,divisionController.updateDivision)
+divisionRouter.patch("/:id", validateRequest(updateDivisionZodSchema), divisionController.updateDivision)
 
 divisionRouter.delete('/:id', divisionController.deleteDivision)

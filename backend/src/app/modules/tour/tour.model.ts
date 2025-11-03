@@ -44,13 +44,42 @@ const tourSchema = new Schema<ITour>(
   }
 );
 
-// ! explore this 
-// // ✅ Auto-generate slug if not provided
-// tourSchema.pre("save", function (next) {
-//   if (!this.slug && this.title) {
-//     this.slug = this.title.toLowerCase().replace(/\s+/g, "-");
-//   }
-//   next();
-// });
+
+tourSchema.pre("save", async function (next) {
+  console.log("Inside the TourPreSave hook ==>", this);
+  if (this.isModified("title")) {
+    const baseSlug = this.title?.toLocaleLowerCase().split(" ").join("-");
+    let slug = `${baseSlug}-tour`;
+
+    let counter = 0;
+    while (await Tour.exists({ slug })) {
+      slug = `${slug}-${counter++}`;
+    }
+
+    this.slug = slug;
+  }
+  next();
+})
+
+tourSchema.pre("findOneAndUpdate", async function (next) {
+  // ? we will  be able to access the division object through this.getUpdate(), here only this - is a query object
+  const tour = this.getUpdate() as Partial<ITour>;
+
+  console.log("Inside the tourPreSave hook ==>", this);
+  if (tour.title) {
+    const baseSlug = tour.title?.toLocaleLowerCase().split(" ").join("-");
+    let slug = `${baseSlug}-tour`;
+
+    let counter = 0;
+    while (await Tour.exists({ slug })) {
+      slug = `${slug}-${counter++}`;
+    }
+
+    tour.slug = slug;
+  }
+  // last e jei oobject update korbo ta setUpdate er modde dibo
+  this.setUpdate(tour)
+  next()
+})
 
 export const Tour = model<ITour>("Tour", tourSchema);
