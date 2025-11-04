@@ -100,15 +100,26 @@ const getAllTours = async (query: Record<string, string>) => {
     console.log("from inside getAllTours - query ==>", query);
     const filter = query;
     const searchTerm = query.searchTerm || "";
+    const sort = query.sort || "-createdAt"
     console.log("from inside getAllTours - filter ==>", filter);
     
-    delete filter["searchTerm"]
+   
+    const excludeField = ["searchTerm", "sort"];
+
+    const finalFilter : Record<string, string> = Object.keys(filter).reduce((acc, key)=>{
+        if(!excludeField.includes(key)){
+            acc[key] = filter[key];
+        }
+        return acc;
+    },{})
+    console.log('finalFilter', finalFilter);
+    
     console.log("from inside getAllTours - filter - after delelting the searchTerm  ==>", filter);
    
     const searchArray = tourSearchableFields.map(field => ({ [field]: { $regex: searchTerm, $options: "i" } }));
     const tours = await Tour.find({
         $or: searchArray
-    }).find(filter);
+    }).find(finalFilter).sort(sort);
 
 
     console.log("from inside getAllTours - Tours ==>", tours);
