@@ -64,8 +64,9 @@ const createTour = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllTours = catchAsync(async (req: Request, res: Response) => {
-
-    const query = req.query
+// url e question mark er pore ja thakbe = query 
+// url er pore alada barti ongso ja thakbe ta i params
+    const query = req.query;
     const result = await TourService.getAllTours(query as Record<string, string>);
     sendResponse(res, {
         statusCode: 200,

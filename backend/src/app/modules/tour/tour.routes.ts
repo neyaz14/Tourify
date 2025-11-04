@@ -34,7 +34,7 @@ tourRouter.get("/", TourController.getAllTours);
 
 tourRouter.post(
     "/create",
-    checkAuth(Role.Admin, Role.Super_Admin),
+    // checkAuth(Role.Admin, Role.Super_Admin),
     validateRequest(createTourZodSchema),
     TourController.createTour
 );

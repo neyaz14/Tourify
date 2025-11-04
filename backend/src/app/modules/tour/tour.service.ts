@@ -1,4 +1,5 @@
 import AppError from "../../errorhelpers/AppError";
+import { tourSearchableFields } from "./tour.constant";
 import { ITour, ITourType } from "./tour.interface";
 import { Tour, TourType } from "./tour.model";
 import httpsStatusCode from "http-status-codes"
@@ -85,7 +86,7 @@ const updateTour = async (id: string, payload: Partial<ITour>) => {
     //     payload.slug = slug
     // }
 
-    const updatedTour = await Tour.findByIdAndUpdate(id, payload, { new: true});
+    const updatedTour = await Tour.findByIdAndUpdate(id, payload, { new: true });
 
     return updatedTour;
 };
@@ -96,30 +97,23 @@ const deleteTour = async (id: string) => {
 
 
 const getAllTours = async (query: Record<string, string>) => {
-
-    return await Tour.find();
-
-    // const queryBuilder = new QueryBuilder(Tour.find(), query)
-
-    // const tours = await queryBuilder
-    //     .search(tourSearchableFields)
-    //     .filter()
-    //     .sort()
-    //     .fields()
-    //     .paginate()
-
-    // // const meta = await queryBuilder.getMeta()
-
-    // const [data, meta] = await Promise.all([
-    //     tours.build(),
-    //     queryBuilder.getMeta()
-    // ])
+    console.log("from inside getAllTours - query ==>", query);
+    const filter = query;
+    const searchTerm = query.searchTerm || "";
+    console.log("from inside getAllTours - filter ==>", filter);
+    
+    delete filter["searchTerm"]
+    console.log("from inside getAllTours - filter - after delelting the searchTerm  ==>", filter);
+   
+    const searchArray = tourSearchableFields.map(field => ({ [field]: { $regex: searchTerm, $options: "i" } }));
+    const tours = await Tour.find({
+        $or: searchArray
+    }).find(filter);
 
 
-    // return {
-    //     data,
-    //     meta
-    // }
+    console.log("from inside getAllTours - Tours ==>", tours);
+
+    return tours;
 };
 
 
