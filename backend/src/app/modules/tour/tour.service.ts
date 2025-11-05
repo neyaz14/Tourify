@@ -1,4 +1,5 @@
 import AppError from "../../errorhelpers/AppError";
+import { excludeField } from "../../global.constat";
 import { tourSearchableFields } from "./tour.constant";
 import { ITour, ITourType } from "./tour.interface";
 import { Tour, TourType } from "./tour.model";
@@ -100,27 +101,29 @@ const getAllTours = async (query: Record<string, string>) => {
     console.log("from inside getAllTours - query ==>", query);
     const filter = query;
     const searchTerm = query.searchTerm || "";
-    const sort = query.sort || "-createdAt"
-    console.log("from inside getAllTours - filter ==>", filter);
-    
-   
-    const excludeField = ["searchTerm", "sort"];
+    const sort = query.sort || "-createdAt";
+    const limit = parseInt(query.limit) || 5;
+    const skip = (parseInt(query.page) - 1) * limit;
 
-    const finalFilter : Record<string, string> = Object.keys(filter).reduce((acc, key)=>{
-        if(!excludeField.includes(key)){
+    // do field filtering
+    const filterField = query.filterField?.split(',').join(" ") || "";
+    console.log("from inside getAllTours - filter ==>", filter);
+
+    const finalFilter: Record<string, string> = Object.keys(filter).reduce((acc, key) => {
+        if (!excludeField.includes(key)) {
             acc[key] = filter[key];
         }
         return acc;
-    },{})
+    }, {} as Record<string, string>)
     console.log('finalFilter', finalFilter);
-    
+
     console.log("from inside getAllTours - filter - after delelting the searchTerm  ==>", filter);
-   
+
     const searchArray = tourSearchableFields.map(field => ({ [field]: { $regex: searchTerm, $options: "i" } }));
+
     const tours = await Tour.find({
         $or: searchArray
-    }).find(finalFilter).sort(sort);
-
+    }).find(finalFilter).sort(sort).select(filterField).limit(limit).skip(skip);
 
     console.log("from inside getAllTours - Tours ==>", tours);
 
