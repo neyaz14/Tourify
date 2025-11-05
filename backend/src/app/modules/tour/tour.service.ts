@@ -102,6 +102,7 @@ const getAllTours = async (query: Record<string, string>) => {
     const filter = query;
     const searchTerm = query.searchTerm || "";
     const sort = query.sort || "-createdAt";
+    const page = parseInt(query.page)
     const limit = parseInt(query.limit) || 5;
     const skip = (parseInt(query.page) - 1) * limit;
 
@@ -126,8 +127,21 @@ const getAllTours = async (query: Record<string, string>) => {
     }).find(finalFilter).sort(sort).select(filterField).limit(limit).skip(skip);
 
     console.log("from inside getAllTours - Tours ==>", tours);
+    const totalTours = await Tour.countDocuments();
 
-    return tours;
+    const totalPage = Math.ceil(totalTours / limit)
+    const metaData = {
+        totalData: totalTours,
+        page: page,
+        totalPage: totalPage,
+        limit: limit,
+        skip: skip
+    }
+
+    return {
+        data: tours,
+        metadata: metaData
+    }
 };
 
 
