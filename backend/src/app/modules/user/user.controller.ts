@@ -1,11 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-
 import { userServices } from "./user.service";
 import { sendResponse } from "../../utilis/sendResponse";
 import { catchAsync } from "../../utilis/catchAsync";
 import httpStatus from "http-status-codes"
-import { verifyToken } from "../../utilis/jwt";
-import { envVars } from "../../config/env";
 import { JwtPayload } from "jsonwebtoken";
 
 
@@ -21,19 +18,16 @@ const createUser = catchAsync(async (req: Request, res: Response, next: NextFunc
 })
 
 
-
 const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const allUsers = await userServices.getAllUsersService()
 
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
-        message: "User Created Successfully",
+        message: "All user supplied",
         data: allUsers,
     })
 })
-
-
 
 
 const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -49,11 +43,10 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
-        message: "User Created Successfully",
+        message: "User updated Successfully",
         data: updatedInfo,
     })
 })
-
 
 
 export const userControllers = { createUser, getAllUsers, updateUser }

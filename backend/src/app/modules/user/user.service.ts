@@ -12,30 +12,26 @@ const createUserService = async (payload: Partial<IUser>) => {
 
     const isUserExist = await User.findOne({ email })
     if (isUserExist) {
-        throw new Error("User alredy exists")
-    } else {
-
-        // * hashpassword
-        const hashedpassword = await bcrypt.hash(password as string, 10)
-
-
-        const authProvider: IAuthProviders = {
-            providers: "credentials",
-            providerId: email as string
-        }
-        const newUser = await User.create({
-            name, email,
-            auths: [authProvider],
-            password: hashedpassword
-            , ...rest
-        });
-
-        // console.log(newUser);
-        return newUser;
+        throw new AppError(httpsCode.BAD_REQUEST, "Email alredy exists")
     }
 
-}
+    // * hashpassword
+    const hashedpassword = await bcrypt.hash(password as string, 10)
 
+    const authProvider: IAuthProviders = {
+        providers: "credentials",
+        providerId: email as string
+    }
+    const newUser = await User.create({
+        name, email,
+        auths: [authProvider],
+        password: hashedpassword
+        , ...rest
+    });
+
+    // console.log(newUser);
+    return newUser;
+}
 
 
 const getAllUsersService = async () => {
@@ -52,7 +48,7 @@ const updateUserService = async (userId: string, payload: Partial<IUser>, decode
         throw new AppError(httpsCode.NOT_FOUND, "User does not exists")
     }
 
-    
+
     // verify role 
     // then allow them to update the user data
     if (payload.role) {

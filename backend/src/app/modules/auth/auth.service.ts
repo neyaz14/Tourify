@@ -47,7 +47,11 @@ const logOutService = async () => {
     return undefined
 }
 
+const googleCallbackService = async(user: Partial<IUser>)=>{
+//
+}
+
 
 export const authService = {
-    credentialsLoginService, getNewAccessTokenService, logOutService
+    credentialsLoginService, getNewAccessTokenService, logOutService, googleCallbackService
 }

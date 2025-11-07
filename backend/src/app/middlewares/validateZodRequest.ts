@@ -7,8 +7,10 @@ export const validateRequest = (zodSchema: AnyZodObject) => async (req: Request,
 
     try {
         req.body = await zodSchema.parseAsync(req.body)
+        console.log('from the validateZodRequest, req.body --->>', req.body);
         next(); 
     } catch (error) {
+        console.log("Error from validateZodRequest ==>>",error);
         next(error)
     }
 }
