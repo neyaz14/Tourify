@@ -1,5 +1,6 @@
 import AppError from "../../errorhelpers/AppError";
 import { excludeField } from "../../global.constat";
+import { QueryBuilder } from "../../utilis/queryBuilder";
 import { tourSearchableFields } from "./tour.constant";
 import { ITour, ITourType } from "./tour.interface";
 import { Tour, TourType } from "./tour.model";
@@ -98,6 +99,28 @@ const deleteTour = async (id: string) => {
 
 
 const getAllTours = async (query: Record<string, string>) => {
+    const queryBuilder = new QueryBuilder(Tour.find(), query)
+
+    // console.log("QueryBuilder ==> ", queryBuilder);
+    // console.log("ModelQuery   ==> ", Tour.find());
+
+    const allTours = await 
+    queryBuilder
+    .filter()
+    .search(tourSearchableFields)
+    .sort().skip().limit()
+    .build();
+
+    const metaData = await queryBuilder.getMetaData();
+console.log(metaData);
+    return {
+        data: allTours,
+        metadata: metaData
+    }
+};
+
+// ? old way to do that 
+const getAllToursOld = async (query: Record<string, string>) => {
     console.log("from inside getAllTours - query ==>", query);
     const filter = query;
     const searchTerm = query.searchTerm || "";
@@ -120,13 +143,16 @@ const getAllTours = async (query: Record<string, string>) => {
 
     console.log("from inside getAllTours - filter - after delelting the searchTerm  ==>", filter);
 
-    const searchArray = tourSearchableFields.map(field => ({ [field]: { $regex: searchTerm, $options: "i" } }));
+    const searchObject = { $or: tourSearchableFields.map(field => ({ [field]: { $regex: searchTerm, $options: "i" } })) };
+    //? we can do inline query 
+    // const tours = await Tour.find(searchObject).find(finalFilter).sort(sort).select(filterField).limit(limit).skip(skip);
+    //? alternative
+    const filterQuery = Tour.find(filter);
+    //?await na deoay, promise resolve hocce na and data o asbe na
+    const tours = filterQuery.find(searchObject)
 
-    const tours = await Tour.find({
-        $or: searchArray
-    }).find(finalFilter).sort(sort).select(filterField).limit(limit).skip(skip);
-
-    console.log("from inside getAllTours - Tours ==>", tours);
+    const allTours = await tours.sort(sort).select(filterField).limit(limit).skip(skip);
+    console.log("from inside getAllTours - Tours ==>", allTours);
     const totalTours = await Tour.countDocuments();
 
     const totalPage = Math.ceil(totalTours / limit)
@@ -139,7 +165,7 @@ const getAllTours = async (query: Record<string, string>) => {
     }
 
     return {
-        data: tours,
+        data: allTours,
         metadata: metaData
     }
 };
