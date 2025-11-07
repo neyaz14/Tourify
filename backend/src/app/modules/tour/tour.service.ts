@@ -171,6 +171,12 @@ const getAllToursOld = async (query: Record<string, string>) => {
 };
 
 
+const getSingleTour = async (slug:string)=>{
+
+    const singleTour = await Tour.findOne({slug: slug});
+    return {data:singleTour}
+}
+
 export const TourService = {
-    createTourType, updateTourType, deleteTourType, getAllTourTypes, createTour, updateTour, deleteTour, getAllTours
+    createTourType, updateTourType, deleteTourType, getAllTourTypes, createTour, updateTour, deleteTour, getAllTours, getSingleTour
 }

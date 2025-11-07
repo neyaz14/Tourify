@@ -39,6 +39,14 @@ tourRouter.post(
     TourController.createTour
 );
 
+tourRouter.get(
+    "/:slug",
+    // checkAuth(Role.Admin, Role.Super_Admin),
+    TourController.getSingleTour
+);
+
+
+
 tourRouter.patch(
     "/:id",
     checkAuth(Role.Admin, Role.Super_Admin),

@@ -27,6 +27,13 @@ export class QueryBuilder<T> {
         return this;
     }
 
+    // findBySlug(): this {
+    //     const slug = this.query.slug;
+    //     this.modelQuery = this.modelQuery.findOne({ slug: slug }) as any;
+
+    //     return this;
+    // }
+
     search(searchAbleField: string[]): this {
         const searchTerm = this.query.searchTerm || "";
         const searchObject = { $or: searchAbleField.map(field => ({ [field]: { $regex: searchTerm, $options: "i" } })) };
@@ -51,7 +58,7 @@ export class QueryBuilder<T> {
     }
 
     limit(): this {
-        const limit = parseInt(this.query.limit) ||5;
+        const limit = parseInt(this.query.limit) || 5;
         this.modelQuery = this.modelQuery.limit(limit);
         return this;
     }

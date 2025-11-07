@@ -37,7 +37,8 @@ const tourSchema = new Schema<ITour>(
       type: Schema.Types.ObjectId,
       ref: "TourType",
       required: true
-    }
+    },
+  
   },
   {
     timestamps: true,
