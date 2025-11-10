@@ -3,6 +3,9 @@ import { userRouter } from "../modules/user/user.route"
 import { authRouter } from "../modules/auth/auth.routes"
 import { divisionRouter } from "../modules/division/division.route"
 import { tourRouter } from "../modules/tour/tour.routes"
+import { bookingRouter } from "../modules/booking/booking.routes"
+import { paymentRouter } from "../modules/payment/payment.routes"
+
 
 const v1Router: Router = Router()
 
@@ -27,6 +30,14 @@ const moduleRoutes: IModuleRoute[] = [
     {
         path: '/tour',
         route: tourRouter
+    },
+    {
+        path: '/booking',
+        route: bookingRouter
+    },
+    {
+        path: '/payment',
+        route: paymentRouter
     },
 ]
 

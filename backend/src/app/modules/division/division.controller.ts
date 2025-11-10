@@ -18,7 +18,7 @@ const createDivisioin = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
-
+ 
 
 const getAllDivision = catchAsync(async (req: Request, res: Response) => {
     const allDivision = await divisionServices.getAllDivision(req.body);
