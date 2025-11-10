@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { Booking_Status } from "./booking.interface";
 
-export const createZodSchema = z.object({
+export const createBookingZodSchema = z.object({
     tour: z.string(),
     guestCount: z.number().positive()
 })
