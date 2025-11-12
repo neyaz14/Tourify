@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee97c10c-228f-4d3e-abd7-7d4013f8ff36" name="Changes" comment="" />
+    <list default="true" id="ee97c10c-228f-4d3e-abd7-7d4013f8ff36" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/modules/payment/payment.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/modules/payment/payment.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/modules/payment/payment.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/modules/payment/payment.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/modules/payment/payment.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/modules/payment/payment.service.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,20 +29,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;divisionApi&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/neyaz/Desktop/Projects/PH-Level-2/Industry/Tourify/backend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\neyaz\\Desktop\\Projects\\PH-Level-2\\Industry\\Tourify\\backend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "sslcom",
+    "last_opened_file_path": "C:/Users/neyaz/Desktop/Projects/PH-Level-2/Industry/Tourify/backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\neyaz\\Desktop\\Projects\\PH-Level-2\\Industry\\Tourify\\backend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -52,6 +66,8 @@
       <workItem from="1762032299785" duration="182000" />
       <workItem from="1762041566000" duration="20000" />
       <workItem from="1762048876505" duration="30000" />
+      <workItem from="1762892332456" duration="120000" />
+      <workItem from="1762892455488" duration="487000" />
     </task>
     <servers />
   </component>
