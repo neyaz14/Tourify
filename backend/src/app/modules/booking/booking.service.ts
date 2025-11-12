@@ -7,6 +7,8 @@ import { Tour } from "../tour/tour.model";
 import { Booking } from "./booking.model";
 import { Payment } from "../payment/payment.model";
 import { PAYMENT_STATUS } from "../payment/payment.interface";
+import { sslCommerzService } from "../sslCommerz/sslcom.service";
+import { ISSLCommerz } from "../sslCommerz/sslcom.interface";
 
 const getTransactionId = () => {
     return `tran_${Date.now()}_${Math.floor(Math.random() * 1000)}`
@@ -56,10 +58,33 @@ const createBooking = async (payload: Partial<IBooking>, userInfo: JwtPayload) =
             .populate("tour", "title costFrom")
             .populate("payment");
 
+
+        const userAddress = (updatedBooking?.user as any).address
+        const userEmail = (updatedBooking?.user as any).email
+        const userPhoneNumber = (updatedBooking?.user as any).phone
+        const userName = (updatedBooking?.user as any).name
+
+        const sslPayload: ISSLCommerz = {
+            address: userAddress,
+            email: userEmail,
+            phoneNumber: userPhoneNumber,
+            name: userName,
+            amount: amount,
+            transactionId: transactionId
+        }
+
+        const sslCommerzInitResult = await sslCommerzService.sslCommerzInit(sslPayload)
+
+        console.log(sslCommerzInitResult);
+
         await session.commitTransaction();
         session.endSession();
 
-        return { updatedBooking };
+        return {
+            bookingInfo: updatedBooking,
+            sslPaymentInitInfo: sslCommerzInitResult
+        };
+        
     } catch (err) {
         await session.abortTransaction();
         session.endSession();

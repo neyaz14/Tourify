@@ -18,7 +18,7 @@ interface EnvVars {
   GOOGLE_CALLBACK_URL: string;
   EXPRESS_SESSION_SECRECT: string;
   SSL: {
-    STORE_ID: string,
+    SSL_STORE_ID: string,
     STORE_PASS: string,
     SSL_PAYMENT_API: string,
     SSL_VALIDATION_API: string,
@@ -49,7 +49,7 @@ const loadEnvVariables = (): EnvVars => {
     "GOOGLE_CALLBACK_URL",
     "EXPRESS_SESSION_SECRECT",
 
-    "STORE_ID",
+    "SSL_STORE_ID",
     "SSL_STORE_PASS",
     "SSL_PAYMENT_API",
     "SSL_VALIDATION_API",
@@ -86,7 +86,7 @@ const loadEnvVariables = (): EnvVars => {
     EXPRESS_SESSION_SECRECT: process.env.EXPRESS_SESSION_SECRECT as string,
 
     SSL: {
-      STORE_ID: process.env.SSL_STORE_ID as string,
+      SSL_STORE_ID: process.env.SSL_STORE_ID as string,
       STORE_PASS: process.env.SSL_STORE_PASS as string,
       SSL_PAYMENT_API: process.env.SSL_PAYMENT_API as string,
       SSL_VALIDATION_API: process.env.SSL_VALIDATION_API as string,
@@ -121,7 +121,7 @@ export const envVars: EnvVars = {
   EXPRESS_SESSION_SECRECT: process.env.EXPRESS_SESSION_SECRECT as string,
 
   SSL: {
-    STORE_ID: process.env.SSL_STORE_ID as string,
+    SSL_STORE_ID: process.env.SSL_STORE_ID as string,
     STORE_PASS: process.env.SSL_STORE_PASS as string,
     SSL_PAYMENT_API: process.env.SSL_PAYMENT_API as string,
     SSL_VALIDATION_API: process.env.SSL_VALIDATION_API as string,

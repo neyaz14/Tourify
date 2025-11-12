@@ -9,7 +9,7 @@ const sslCommerzInit = async  (payload: ISSLCommerz)=>{
     try{
 
         const data ={
-            store_id: envVars.SSL.STORE_ID,
+            store_id: envVars.SSL.SSL_STORE_ID,
             store_passwd: envVars.SSL.STORE_PASS,
             total_amount: payload.amount,
             currency: "BDT",
@@ -55,7 +55,7 @@ const sslCommerzInit = async  (payload: ISSLCommerz)=>{
 
     }catch (err){
         console.log("Https status code form axios ====>",HttpStatusCode.BadRequest);
-        console.log(err);
+        console.log('sslcommerz initialization error ==>',err);
         throw new AppError(HttpStatusCode.BadRequest, "Something wrong happened with the sslCommerz payment initalization ")
     }
 }
