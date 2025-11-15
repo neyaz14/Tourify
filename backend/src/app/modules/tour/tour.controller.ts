@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 import { catchAsync } from "../../utilis/catchAsync";
 import { sendResponse } from "../../utilis/sendResponse";
 import { TourService } from "./tour.service";
+import { ITour } from "./tour.interface";
 
 
 const createTourType = catchAsync(async (req: Request, res: Response) => {
-    const payload  = req.body;
+    const payload = req.body;
     console.log('from inside the controller===>', payload);
     const result = await TourService.createTourType(payload);
     sendResponse(res, {
@@ -40,7 +41,7 @@ const deleteTourType = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllTourTypes = catchAsync(async (req: Request, res: Response) => {
-   
+
     const result = await TourService.getAllTourTypes();
     sendResponse(res, {
         statusCode: 200,
@@ -54,7 +55,12 @@ const getAllTourTypes = catchAsync(async (req: Request, res: Response) => {
 // ! --- Tour related
 
 const createTour = catchAsync(async (req: Request, res: Response) => {
-    const result = await TourService.createTour(req.body);
+    const payload: ITour = {
+        ...req.body,
+        images: (req.files as Express.Multer.File[]).map(file => file.path)
+    }
+    // console.log("Payload inside the tour Controller ==>", payload);
+    const result = await TourService.createTour(payload);
     sendResponse(res, {
         statusCode: 201,
         success: true,
@@ -64,8 +70,8 @@ const createTour = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllTours = catchAsync(async (req: Request, res: Response) => {
-// url e question mark er pore ja thakbe = query 
-// url er pore alada barti ongso ja thakbe ta i params
+    // url e question mark er pore ja thakbe = query 
+    // url er pore alada barti ongso ja thakbe ta i params
     const query = req.query;
     const result = await TourService.getAllTours(query as Record<string, string>);
     sendResponse(res, {
@@ -89,7 +95,7 @@ const updateTour = catchAsync(async (req: Request, res: Response) => {
 });
 
 
-const getSingleTour =catchAsync(async (req: Request, res: Response) => {
+const getSingleTour = catchAsync(async (req: Request, res: Response) => {
 
     const slug = req.params.slug;
     const result = await TourService.getSingleTour(slug);
@@ -113,5 +119,5 @@ const deleteTour = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const TourController = {
-    createTourType, updateTourType, deleteTourType,getAllTourTypes, getAllTours, updateTour, deleteTour, createTour, getSingleTour
+    createTourType, updateTourType, deleteTourType, getAllTourTypes, getAllTours, updateTour, deleteTour, createTour, getSingleTour
 }

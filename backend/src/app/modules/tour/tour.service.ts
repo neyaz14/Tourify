@@ -10,6 +10,8 @@ import httpsStatusCode from "http-status-codes"
 // *---------------- TourType
 const createTourType = async (payload: ITourType) => {
     console.log('from inside the service ===>', payload);
+
+
     const existingTourType = await TourType.findOne({ name: payload.name });
     if (existingTourType) {
         throw new Error("Tour type already exists.");
@@ -46,24 +48,20 @@ const deleteTourType = async (id: string) => {
 
 const createTour = async (payload: ITour) => {
     console.log("inside the createTour service ==>", payload);
+
+    // if (payload.images){
+    //     payload.images.push()
+    //  }
+
     const existingTour = await Tour.findOne({ title: payload.title });
     if (existingTour) {
         throw new Error("A tour with this title already exists.");
     }
-    // // ?---- working on the slug
-    // const baseSlug = payload.title.toLowerCase().split(" ").join("-")
-    // let slug = `${baseSlug}`
-
-    // let counter = 0;
-    // while (await Tour.exists({ slug })) {
-    //     slug = `${slug}-${counter++}` // dhaka-division-2
-    // }
-
-    // payload.slug = slug;
 
     const tour = await Tour.create(payload)
 
     return tour;
+    // return payload;
 };
 
 
@@ -104,15 +102,15 @@ const getAllTours = async (query: Record<string, string>) => {
     // console.log("QueryBuilder ==> ", queryBuilder);
     // console.log("ModelQuery   ==> ", Tour.find());
 
-    const allTours = await 
-    queryBuilder
-    .filter()
-    .search(tourSearchableFields)
-    .sort().skip().limit()
-    .build();
+    const allTours = await
+        queryBuilder
+            .filter()
+            .search(tourSearchableFields)
+            .sort().skip().limit()
+            .build();
 
     const metaData = await queryBuilder.getMetaData();
-console.log(metaData);
+    console.log(metaData);
     return {
         data: allTours,
         metadata: metaData
@@ -171,10 +169,10 @@ const getAllToursOld = async (query: Record<string, string>) => {
 };
 
 
-const getSingleTour = async (slug:string)=>{
+const getSingleTour = async (slug: string) => {
 
-    const singleTour = await Tour.findOne({slug: slug});
-    return {data:singleTour}
+    const singleTour = await Tour.findOne({ slug: slug });
+    return { data: singleTour }
 }
 
 export const TourService = {

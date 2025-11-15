@@ -4,13 +4,18 @@ import { createDivisionZodSchema, updateDivisionZodSchema } from "./division.zod
 import { divisionController } from "./division.controller";
 import { checkAuth } from "../../middlewares/checkAuth";
 import { Role } from "../user/user.interface";
+import { multerUpload } from "../../config/multer.config";
 
 
 export const divisionRouter = Router();
 
 // ! use checkAuth 
 
-divisionRouter.post("/create", checkAuth(Role.Admin, Role.Super_Admin), validateRequest(createDivisionZodSchema), divisionController.createDivisioin);
+divisionRouter.post("/create", 
+    checkAuth(Role.Admin, Role.Super_Admin), 
+    validateRequest(createDivisionZodSchema), 
+    multerUpload.single('file'),
+    divisionController.createDivisioin);
 
 divisionRouter.get("/allDivision", divisionController.getAllDivision)
 

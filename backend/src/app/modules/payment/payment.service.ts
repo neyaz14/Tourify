@@ -114,7 +114,6 @@ const failPayment = async (query: Record<string,string>)=>{
 
     try {
 
-
         const updatedPayment = await Payment.findOneAndUpdate({ transactionId: query.transactionId }, {
             status: PAYMENT_STATUS.CANCELLED,
         }, { runValidators: true, session: session })
