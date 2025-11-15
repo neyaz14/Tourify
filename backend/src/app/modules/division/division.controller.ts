@@ -5,9 +5,18 @@ import { sendResponse } from "../../utilis/sendResponse";
 
 import httpStatus from "http-status-codes"
 import { JwtPayload } from "jsonwebtoken";
+import { IDivision } from "./division.interface";
 
 
 const createDivisioin = catchAsync(async (req: Request, res: Response) => {
+    console.log({
+        file: req.file,
+        body: req.body
+    });
+    const payload : IDivision = {
+        ...req.body,
+        thumbnail: req.file?.path
+    }
     const division = await divisionServices.createDivisioin(req.body);
 
     sendResponse(res, {
