@@ -6,8 +6,9 @@ import { handleDuplicateError } from "../errorhelpers/handleduplicateerror";
 import { handleCastError } from "../errorhelpers/handleCastError";
 import { handleZodError } from "../errorhelpers/handleZodError";
 import { handleMongooseValidationError } from "../errorhelpers/handleMongooseValidationError";
+import { deleteImageFromCloudinary } from "../config/cloudinary.config";
 
-export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const globalErrorHandler = async (err: any, req: Request, res: Response, next: NextFunction) => {
     let errorSource: TErrorSources[] = [];
     let statusCode = 500;
     let message = `Something went wrong `;
@@ -46,25 +47,34 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
         errorSource = simplifiedError.errorSource as TErrorSources[];
     }
 
-    // Mongoose Validation Error
-    else if(err.name === "ValidationError"){
+    //* Mongoose Validation Error
+    else if (err.name === "ValidationError") {
         const simplifiedError = handleMongooseValidationError(err);
         statusCode = simplifiedError.statusCode;
         message = simplifiedError.message;
         errorSource = simplifiedError.errorSource as TErrorSources[];
     }
+    // * delete image from cloudinary
+    else if (req.file) {
+        await deleteImageFromCloudinary(req.file.path)
+    }
+    else if (req.files && Array.isArray(req.files) && req.files.length) {
+        const imageUrl = (req.files as Express.Multer.File[]).map(file => file.path)
+        await Promise.all(imageUrl.map(url => deleteImageFromCloudinary(url)))
+    }
+
 
 
     else if (err instanceof AppError) {
         statusCode = err.statusCode;
         message = err.message;
-        console.log("Error form globalError, instance of AppError",err);
+        console.log("Error form globalError, instance of AppError", err);
     }
     else if (err instanceof Error) {
         statusCode = 500;
         message = err.message
     }
-    
+
 
 
 
