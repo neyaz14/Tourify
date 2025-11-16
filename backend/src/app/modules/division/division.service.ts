@@ -3,6 +3,7 @@ import AppError from "../../errorhelpers/AppError"
 import { IDivision } from "./division.interface"
 import { Division } from "./division.model"
 import httpsCdoe from "http-status-codes"
+import { deleteImageFromCloudinary } from "../../config/cloudinary.config"
 
 
 const createDivisioin = async (payload: Partial<IDivision>) => {
@@ -50,14 +51,14 @@ const updateDivision = async (divisionId: string, payload: Partial<IDivision>, v
     // prevent duplicate division 
     const duplicateDivision = await Division.findOne({
         name: payload.name,
-        _id: {$ne: divisionId} 
+        _id: { $ne: divisionId }
     })
-    if(duplicateDivision){
+    if (duplicateDivision) {
         throw new AppError(httpsCdoe.BAD_REQUEST, 'Has a same division name with this Name')
     }
 
     // creating the slug
-     const baseSlug = payload.name?.toLocaleLowerCase().split(" ").join("-");
+    const baseSlug = payload.name?.toLocaleLowerCase().split(" ").join("-");
     let slug = `${baseSlug}-division`;
 
     let counter = 0;
@@ -67,9 +68,15 @@ const updateDivision = async (divisionId: string, payload: Partial<IDivision>, v
 
     payload.slug = slug;
 
+    // ? check if there is any image or not in the 
+// TODO : Working on the division image update url 
+
     const newDivision = await Division.findByIdAndUpdate(divisionId, payload, {
         new: true, runValidators: true
     })
+    if (payload.thumbnail && existngDivision.thumbnail) {
+        await deleteImageFromCloudinary(existngDivision.thumbnail);
+    }
 
     return newDivision;
 }

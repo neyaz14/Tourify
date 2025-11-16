@@ -42,7 +42,11 @@ const getAllDivision = catchAsync(async (req: Request, res: Response) => {
 
 const updateDivision = catchAsync(async (req: Request, res: Response) => {
     const divisionId = req.params.id;
-    const payload = req.body;
+    // const payload = req.body;
+    const payload : IDivision = {
+        ...req.body,
+        thumbnail: req.file?.path
+    }
 
     const verifiedToken = req.user;
 
