@@ -52,6 +52,7 @@ const createTour = async (payload: ITour) => {
     // if (payload.images){
     //     payload.images.push()
     //  }
+    throw new Error("A tour with this title already exists.");
 
     const existingTour = await Tour.findOne({ title: payload.title });
     if (existingTour) {

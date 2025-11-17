@@ -17,7 +17,7 @@ const createDivisioin = catchAsync(async (req: Request, res: Response) => {
         ...req.body,
         thumbnail: req.file?.path
     }
-    const division = await divisionServices.createDivisioin(req.body);
+    const division = await divisionServices.createDivisioin(payload);
 
     sendResponse(res, {
         success: true,
@@ -42,11 +42,16 @@ const getAllDivision = catchAsync(async (req: Request, res: Response) => {
 
 const updateDivision = catchAsync(async (req: Request, res: Response) => {
     const divisionId = req.params.id;
-    const payload = req.body;
+    // const payload = req.body;
+    const payload : IDivision = {
+        ...req.body,
+        thumbnail: req.file?.path
+    }
+    // console.log("Payload from the updatedivController ==> ", payload);
 
-    const verifiedToken = req.user;
+    // const verifiedToken = req.user;
 
-    const updatedDivision = await divisionServices.updateDivision(divisionId, payload, verifiedToken as JwtPayload)
+    const updatedDivision = await divisionServices.updateDivision(divisionId, payload)
 
     sendResponse(res, {
         success: true,
