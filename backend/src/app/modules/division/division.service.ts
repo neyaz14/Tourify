@@ -40,11 +40,12 @@ const deleteDivision = async (payload) => {
 }
 
 
-const updateDivision = async (divisionId: string, payload: Partial<IDivision>, verifiedToken: JwtPayload) => {
+const updateDivision = async (divisionId: string, payload: Partial<IDivision>) => {
     //first check the name 
-    const existngDivision = await Division.findOne({ name: payload.name });
+    const existngDivision = await Division.findById(divisionId);
+    // console.log('existing division -->', existngDivision);
     if (!existngDivision) {
-        throw new AppError(httpsCdoe.BAD_REQUEST, "A division with this name already exists");
+        throw new AppError(httpsCdoe.BAD_REQUEST, "No division Found with this id");
     }
 
     // check if division Name if exists in another doc
@@ -57,16 +58,7 @@ const updateDivision = async (divisionId: string, payload: Partial<IDivision>, v
         throw new AppError(httpsCdoe.BAD_REQUEST, 'Has a same division name with this Name')
     }
 
-    // creating the slug
-    const baseSlug = payload.name?.toLocaleLowerCase().split(" ").join("-");
-    let slug = `${baseSlug}-division`;
-
-    let counter = 0;
-    while (await Division.exists({ slug })) {
-        slug = `${slug}-${counter++}`;
-    }
-
-    payload.slug = slug;
+    
 
     // ? check if there is any image or not in the 
 // TODO : Working on the division image update url 

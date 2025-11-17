@@ -12,7 +12,8 @@ export const userRouter = Router();
 
 
 
-
+// TODO : Create user propfile picture related things 
+// ! we also need to create something like - user profile settings 
  
 
 userRouter.post("/register", validateRequest(createUserZodSchema), userControllers.createUser);
