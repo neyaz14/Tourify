@@ -12,7 +12,7 @@ import passport from "passport";
 
 
 
-const credentialsLoginController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const credentialsLoginController = catchAsync(async (req: Request, res: Response) => {
     const userInfo = await authService.credentialsLoginService(req.body);
     console.log(userInfo);
 
@@ -78,11 +78,9 @@ const logOutController = catchAsync(async (req: Request, res: Response, next: Ne
 // ? Reset password
 const resetPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const newPassword = req.body.newPassword;
-    const oldPassword = req.body.oldPassword;
-    const decodedToken = req.user;
+   const decodedToken = req.user
 
-    await authService.resetPassword(oldPassword, newPassword, decodedToken as JwtPayload);
+    await authService.resetPassword(req.body, decodedToken as JwtPayload);
 
     sendResponse(res, {
         success: true,
@@ -92,9 +90,24 @@ const resetPassword = catchAsync(async (req: Request, res: Response, next: NextF
     })
 })
 
-const setPasswordController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const decodedToken : JwtPayload = req.user;
+
+const forgetPasswordController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+   const { email } = req.body;
+
+    await authService.forgotPassword(email);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Email Sent Successfully",
+        data: null,
+    })
+});
+
+const setPasswordController = catchAsync(async (req: Request, res: Response) => {
+
+    const decodedToken: JwtPayload = req.user;
     const { password } = req.body;
 
     await authService.setPassword(decodedToken.userId, password);
@@ -108,12 +121,22 @@ const setPasswordController = catchAsync(async (req: Request, res: Response, nex
 });
 
 
-const forgetPasswordController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    //
+const changePasswordController = catchAsync(async (req: Request, res: Response) => {
+      const newPassword = req.body.newPassword;
+    const oldPassword = req.body.oldPassword;
+    const decodedToken = req.user
+
+    await authService.changePassword(oldPassword, newPassword, decodedToken as JwtPayload);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Password Changed Successfully",
+        data: null,
+    })
 })
-const changePasswordController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    //
-})
+
+
 
 
 // ! Google passport js related things 
@@ -143,8 +166,7 @@ const googleAuth = catchAsync(async (req: Request, res: Response, next: NextFunc
             return next(new AppError(401, info.message))
         }
 
-        const userTokens = await createUserTokens(user)
-
+        const userTokens = createUserTokens(user)
         // delete user.toObject().password
 
         const { password: pass, ...rest } = user.toObject()
@@ -210,5 +232,14 @@ const googleCallback = catchAsync(async (req: Request, res: Response, next: Next
 
 
 export const authControllers = {
-    credentialsLoginController, getNewAccessTokenController, logOutController, googleCallback, resetPassword, googleAuth, setPasswordController, forgetPasswordController, changePasswordController
+    credentialsLoginController,
+    getNewAccessTokenController,
+    logOutController,
+    googleCallback,
+    googleAuth,
+
+    resetPassword,
+    setPasswordController,
+    forgetPasswordController,
+    changePasswordController
 }

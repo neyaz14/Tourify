@@ -10,9 +10,7 @@ authRouter.post('/login', authControllers.credentialsLoginController);
 
 authRouter.post('/refreshToken', authControllers.getNewAccessTokenController);
 
-
 authRouter.post('/logout', authControllers.logOutController);
-
 
 // ! google Passportjs Login 
 // * Google Login 
@@ -24,12 +22,11 @@ authRouter.get("/googleLogin", async (req: Request, res: Response, next: NextFun
         console.log("Google login error - ", error);
     }
 });
-// * Google callback url
+// * Google callback url - what happen if 
 authRouter.get("/google/callback",
     passport.authenticate("google",
         { failureRedirect: "/login" }),
     authControllers.googleCallback)
-
 
 
 // ! Passwrod Related 
