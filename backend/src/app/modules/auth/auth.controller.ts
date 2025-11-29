@@ -7,10 +7,12 @@ import AppError from "../../errorhelpers/AppError";
 import { setAuthCookie } from "../../utilis/setCookies";
 import { createUserTokens } from "../../utilis/userTokens";
 import { envVars } from "../../config/env";
+import { JwtPayload } from "jsonwebtoken";
+import passport from "passport";
 
 
 
-const credentialsLoginController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const credentialsLoginController = catchAsync(async (req: Request, res: Response) => {
     const userInfo = await authService.credentialsLoginService(req.body);
     console.log(userInfo);
 
@@ -71,16 +73,144 @@ const logOutController = catchAsync(async (req: Request, res: Response, next: Ne
     })
 })
 
+
+// ! Password Related controllers 
+// ? Reset password
+const resetPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+   const decodedToken = req.user
+
+    await authService.resetPassword(req.body, decodedToken as JwtPayload);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Password Changed Successfully",
+        data: null,
+    })
+})
+
+
+
+const forgetPasswordController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+   const { email } = req.body;
+
+    await authService.forgotPassword(email);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Email Sent Successfully",
+        data: null,
+    })
+});
+
+const setPasswordController = catchAsync(async (req: Request, res: Response) => {
+
+    const decodedToken: JwtPayload = req.user;
+    const { password } = req.body;
+
+    await authService.setPassword(decodedToken.userId, password);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Password Changed Successfully",
+        data: null,
+    })
+});
+
+
+const changePasswordController = catchAsync(async (req: Request, res: Response) => {
+      const newPassword = req.body.newPassword;
+    const oldPassword = req.body.oldPassword;
+    const decodedToken = req.user
+
+    await authService.changePassword(oldPassword, newPassword, decodedToken as JwtPayload);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Password Changed Successfully",
+        data: null,
+    })
+})
+
+
+
+
+// ! Google passport js related things 
+// ? google login create
+const googleAuth = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    // const loginInfo = await AuthServices.credentialsLogin(req.body)
+
+    passport.authenticate("local", async (err: any, user: any, info: any) => {
+
+        if (err) {
+
+            // ❌❌❌❌❌
+            // throw new AppError(401, "Some error")
+            // next(err)
+            // return new AppError(401, err)
+
+
+            // ✅✅✅✅
+            // return next(err)
+            // console.log("from err");
+            return next(new AppError(401, err))
+        }
+
+        if (!user) {
+            // console.log("from !user");
+            // return new AppError(401, info.message)
+            return next(new AppError(401, info.message))
+        }
+
+        const userTokens = createUserTokens(user)
+        // delete user.toObject().password
+
+        const { password: pass, ...rest } = user.toObject()
+
+
+        setAuthCookie(res, userTokens)
+
+        sendResponse(res, {
+            success: true,
+            statusCode: httpStatus.OK,
+            message: "User Logged In Successfully",
+            data: {
+                accessToken: userTokens.accessToken,
+                refreshToken: userTokens.refreshToken,
+                user: rest
+
+            },
+        })
+    })(req, res, next)
+
+    // res.cookie("accessToken", loginInfo.accessToken, {
+    //     httpOnly: true,
+    //     secure: false
+    // })
+
+
+    // res.cookie("refreshToken", loginInfo.refreshToken, {
+    //     httpOnly: true,
+    //     secure: false,
+    // })
+
+
+})
+
 const googleCallback = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
     let redirectTo = req.query.state ? req.query.state as string : "";
-   
+
     if (redirectTo.startsWith('/')) {
         redirectTo = redirectTo.slice(1)
     }
-    console.log("from the controller -- ");
+    // console.log("from the controller -- ");
     const user = req.user;
-    console.log('user from req ', user);
+    // console.log('user from req ', user);
     if (!user) {
         throw new AppError(httpStatus.NOT_FOUND, "User not found")
     }
@@ -88,29 +218,28 @@ const googleCallback = catchAsync(async (req: Request, res: Response, next: Next
 
     setAuthCookie(res, tokenInfo)
 
-    // res.clearCookie("accessToken", {
-    //     httpOnly: true,
-    //     secure: false,
-    //     sameSite: "lax"
-    // })
-    // res.clearCookie("refreshToken", {
-    //     httpOnly: true,
-    //     secure: false,
-    //     sameSite: "lax"
-    // })
 
-    // res.redirect(`${envVars.FRONTEND_URL}`)
     res.redirect(`${envVars.FRONTEND_URL}/${redirectTo}`)
 
 
-    sendResponse(res, {
-        success: true,
-        statusCode: httpStatus.OK,
-        message: "user Logged out  Successfully",
-        data: null,
-    })
+    // sendResponse(res, {
+    //     success: true,
+    //     statusCode: httpStatus.OK,
+    //     message: "user Logged out  Successfully",
+    //     data: null,
+    // })
 })
 
+
 export const authControllers = {
-    credentialsLoginController, getNewAccessTokenController, logOutController, googleCallback
+    credentialsLoginController,
+    getNewAccessTokenController,
+    logOutController,
+    googleCallback,
+    googleAuth,
+
+    resetPassword,
+    setPasswordController,
+    forgetPasswordController,
+    changePasswordController
 }
