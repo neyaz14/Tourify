@@ -1,11 +1,7 @@
-Here’s a **production-level README.md for your backend** based on your full documentation 👇
-(You can directly copy-paste into your repo)
+# 🚀Tourify Backend
 
----
-
-# 🚀 PH Tour Management System Backend
-
-A scalable, secure, and modular **Tour Management System Backend API** built with **Node.js, Express, MongoDB, and Redis**.
+A scalable, secure, and modular **Tour Management System Backend- Tourify** 
+built with **Node.js, Express, MongoDB, and Redis**.
 This system powers a full-featured tour booking platform with authentication, booking, payments, and admin management.
 
 ---
@@ -53,7 +49,7 @@ The backend provides RESTful APIs to support a complete tour management platform
 * **Architecture Pattern:** MVC (Model-View-Controller)
 * **API Style:** RESTful (`/api/v1`)
 * **Scalability:** Horizontally scalable
-* **Frontend:** Separate SPA (React / Next.js)
+* **Frontend:** Separate SPA (React)
 
 ---
 
