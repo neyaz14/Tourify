@@ -36,7 +36,7 @@ const getAllDivision = async (payload: Partial<IDivision>) => {
 }
 
 const deleteDivision = async (payload) => {
-    //
+    // check how to delete the division
 }
 
 
