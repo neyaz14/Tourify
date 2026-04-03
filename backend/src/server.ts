@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import app from "./app";
 import { envVars } from "./app/config/env";
 import { seedSuperAdmin } from "./app/utilis/seedSuperAdmin";
+import { redisConnect } from "./app/config/redis.config";
 // import { envVars } from "./app/config/env";
 
 let server: Server;
@@ -24,6 +25,7 @@ const startServer = async () => {
 
 // IFE function 
 (async () => {
+    await redisConnect();
     await startServer();
     await seedSuperAdmin();
 })();

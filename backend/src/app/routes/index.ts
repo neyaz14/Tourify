@@ -5,6 +5,7 @@ import { divisionRouter } from "../modules/division/division.route"
 import { tourRouter } from "../modules/tour/tour.routes"
 import { bookingRouter } from "../modules/booking/booking.routes"
 import { paymentRouter } from "../modules/payment/payment.routes"
+import { otpRouteer } from "../modules/otp/otp.routes"
 
 
 const v1Router: Router = Router()
@@ -39,6 +40,10 @@ const moduleRoutes: IModuleRoute[] = [
         path: '/payment',
         route: paymentRouter
     },
+    {
+        path: '/otp',
+        route: otpRouteer
+    }
 ]
 
 moduleRoutes.forEach(route=>{
