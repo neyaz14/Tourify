@@ -1,2 +1,6 @@
 node_modules
 .env
+
+
+../frontend-*
+../ph-tour-management-system-backend
